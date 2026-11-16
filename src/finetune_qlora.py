@@ -39,6 +39,7 @@ def parse_args():
     p.add_argument("--batch", type=int, default=1, help="Per-device batch size")
     p.add_argument("--grad_accum", type=int, default=8, help="Effective batch = batch * grad_accum")
     p.add_argument("--lr", type=float, default=2e-4)
+    p.add_argument("--warmup_steps", type=int, default=5, help="Linear warmup steps before the cosine schedule")
     p.add_argument("--lora_r", type=int, default=16)
     p.add_argument("--lora_alpha", type=int, default=32)
     p.add_argument("--lora_dropout", type=float, default=0.05)
@@ -48,7 +49,8 @@ def parse_args():
 
 
 def pick_compute_dtype():
-    if torch.cuda.is_available() and torch.cuda.is_bf16_supported():
+    """bf16 needs compute capability 8.0+ (Ampere). T4 (7.5) and GTX 1650 (7.5) use fp16."""
+    if torch.cuda.is_available() and torch.cuda.get_device_capability(0)[0] >= 8:
         return torch.bfloat16
     return torch.float16
 
@@ -127,7 +129,7 @@ def main():
         max_steps=args.max_steps,
         learning_rate=args.lr,
         lr_scheduler_type="cosine",
-        warmup_ratio=0.03,
+        warmup_steps=args.warmup_steps,
         logging_steps=5,
         save_strategy="steps",
         save_steps=200,

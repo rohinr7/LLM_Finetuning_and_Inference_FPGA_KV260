@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Run outputs, weights and large artefacts
+outputs/
+*.safetensors
+*.bin
+*.gguf
+*.pt
+*.ckpt
+wandb/
+
+# Datasets: keep only the small sample in git
+data/*
+!data/sample.jsonl
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

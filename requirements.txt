@@ -1,0 +1,7 @@
+# Core training stack. Versions are not pinned yet; pin them after the first working run.
+torch
+transformers
+peft
+accelerate
+datasets
+bitsandbytes

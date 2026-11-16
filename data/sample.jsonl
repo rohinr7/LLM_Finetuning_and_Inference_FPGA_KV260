@@ -1,0 +1,5 @@
+{"prompt": "What does NPU stand for?", "response": "Neural processing unit."}
+{"prompt": "What is quantization in the context of language models?", "response": "Storing model weights at lower numeric precision, such as 4-bit integers, to reduce memory use and speed up inference."}
+{"prompt": "What does QLoRA do?", "response": "It fine-tunes a 4-bit quantized base model by training small low-rank LoRA adapters."}
+{"prompt": "Why use an FPGA for inference?", "response": "An FPGA can be configured into a custom datapath for a fixed workload, which can give good speed per watt at the edge."}
+{"prompt": "What is the KV260?", "response": "AMD's Kria KV260 is an edge development board built around a Zynq UltraScale+ FPGA."}

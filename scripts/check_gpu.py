@@ -36,8 +36,11 @@ def main():
     print(f"\nGPU             : {props.name}")
     print(f"Compute capability: {props.major}.{props.minor}")
     print(f"VRAM            : {vram_gb:.1f} GB")
-    print(f"bf16 supported  : {torch.cuda.is_bf16_supported()}")
-    print("Use fp16 if bf16 is False (the GTX 1650 is one such card).")
+    # torch.cuda.is_bf16_supported() can return True on Turing via emulation, so we
+    # use the compute capability to decide native bf16 support (Ampere, 8.0+).
+    native_bf16 = props.major >= 8
+    print(f"Native bf16     : {native_bf16} (needs compute capability 8.0+)")
+    print(f"Dtype used by finetune_qlora.py: {'bfloat16' if native_bf16 else 'float16'}")
 
     if vram_gb < 6:
         print("\nAdvice: stay at 0.5B-1.5B models with --max_len 256-512 and batch size 1.")

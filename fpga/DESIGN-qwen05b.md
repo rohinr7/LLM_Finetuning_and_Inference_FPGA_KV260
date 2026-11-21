@@ -1,6 +1,6 @@
 # FPGA design plan: Qwen2.5-0.5B-Instruct on the KV260
 
-Status: planning, 21 Nov 2026. Nothing is implemented yet. Figures marked **measured** come from the board or our runs. Figures marked **estimate** are our own arithmetic from the model config and must be checked.
+Status: planning with milestone 1 started, 21 Nov 2026. The matrix-vector kernel is written and passes a host test. No hardware build or board test has run yet. Figures marked **measured** come from the board or our runs. Figures marked **estimate** are our own arithmetic from the model config and must be checked.
 
 ## 1. Target to beat
 
@@ -11,7 +11,7 @@ From the CPU baseline (`docs/runs/2026-11-21-kv260-cpu-baseline.md`, measured):
 | Generation, tg64 | 5.87 ± 0.02 tokens/s |
 | Prompt processing, pp128 | 8.69 ± 0.01 tokens/s |
 
-Thread scaling and power are not measured yet. The FPGA design should report both.
+Thread scaling (1 to 4 threads) is measured in `docs/runs/2026-11-21-kv260-thread-scaling.md`: generation rises from 1.59 to 5.87 tokens/s, close to linear. Power is not measured yet. The FPGA design should report both.
 
 ## 2. Model facts
 
@@ -69,6 +69,18 @@ Attention cost grows with context: at 4096 tokens it is about half the per-layer
 5. **Prefill.** Add the tiled matrix-matrix engine. Compare pp128 with the baseline.
 
 Each milestone gets a run log under `docs/runs/`.
+
+### Progress
+
+| Milestone | Status |
+|---|---|
+| 1. CPU measurements (thread scaling, profile) | Thread scaling done. Power and profile not done |
+| 2. One matrix-vector kernel | Kernel written (`fpga/hls/matvec_int4.h`). Host test passes (`fpga/sim/`, run log `docs/runs/2026-11-21-matvec-int4-host-test.md`). Vitis HLS synthesis and board test not started |
+| 3. One transformer block on the PL | Not started |
+| 4. Full decode | Not started |
+| 5. Prefill | Not started |
+
+Milestone 2 host test: the kernel matches the quantized reference to float rounding. Against the unquantized product on random Gaussian data, the error is about 11% of the largest output. That is the cost of round-to-nearest 4-bit weights with no calibration. The next check is the same comparison on real Qwen2.5-0.5B weights, with and without AWQ-style scaling.
 
 ## 6. Success criteria (first pass)
 

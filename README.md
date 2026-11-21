@@ -14,8 +14,9 @@ Part of the Hodgkin-Huxley Labs NPU initiative. This repo tracks the first three
 | GPU check and QLoRA fine-tuning script | Initial scaffold (this commit) |
 | First fine-tune on a 0.5B model (GTX 1650, 4 GB) | Not started |
 | Scale-up to 1.5B–7B on Kaggle or Colab (T4, 16 GB) | Not started |
-| Quantized inference (GGUF or bitnet.cpp) | Not started |
-| FPGA design for KV260 | Not started |
+| Quantized inference on KV260, CPU baseline (llama.cpp, Qwen2.5-0.5B Q4_K_M) | Done, 21 Nov 2026: 5.87 tokens/s generation, 8.69 tokens/s prompt processing. See `docs/runs/2026-11-21-kv260-cpu-baseline.md` |
+| Quantized inference on GPU (GGUF or bitnet.cpp) | Not started |
+| FPGA design for KV260 | Not started. Target to beat: the CPU baseline above |
 
 ## Hardware used
 
@@ -35,6 +36,8 @@ Part of the Hodgkin-Huxley Labs NPU initiative. This repo tracks the first three
 │   └── check_gpu.py          # reports GPU, VRAM, fp16/bf16 support, bitsandbytes
 ├── src/
 │   └── finetune_qlora.py     # QLoRA fine-tuning (4-bit base + LoRA adapters)
+├── docs/
+│   └── runs/                 # one short log per run (model, settings, results)
 └── fpga/                     # KV260 design work (empty for now)
 ```
 

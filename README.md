@@ -14,9 +14,9 @@ Part of the Hodgkin-Huxley Labs NPU initiative. This repo tracks the first three
 | GPU check and QLoRA fine-tuning script | Initial scaffold (this commit) |
 | First fine-tune on a 0.5B model (GTX 1650, 4 GB) | Not started |
 | Scale-up to 1.5B–7B on Kaggle or Colab (T4, 16 GB) | Not started |
-| Quantized inference on KV260, CPU baseline (llama.cpp, Qwen2.5-0.5B Q4_K_M) | Done, 21 Nov 2026: 5.87 tokens/s generation, 8.69 tokens/s prompt processing. See `docs/runs/2026-11-21-kv260-cpu-baseline.md` |
-| Quantized inference on GPU (GGUF or bitnet.cpp) | Not started |
-| FPGA design for KV260 | Not started. Target to beat: the CPU baseline above |
+| Quantized inference on KV260, CPU baseline (llama.cpp, Qwen2.5-0.5B Q4_K_M) | Done, 21 Nov 2026. Board: Kria KV260, 4 × Cortex-A53, 3.8 GiB RAM, Ubuntu 22.04. llama.cpp `19bc41d`, model 463 MiB. Prompt processing (pp128): 8.69 ± 0.01 tokens/s. Generation (tg64): 5.87 ± 0.02 tokens/s. 3 repetitions. Not yet measured: thread scaling, power. Log: `docs/runs/2026-11-21-kv260-cpu-baseline.md` |
+| Quantized inference on GPU (GGUF or bitnet.cpp) | Not started. Planned: Qwen2.5-0.5B on GTX 1650 (4 GB) |
+| FPGA design for KV260 | Not started. Target to beat: 5.87 tokens/s generation and 8.69 tokens/s prompt processing (CPU baseline). Board software ready: PYNQ 3.0.1, XRT 2.13, VART 2.5.0. The stock Vitis AI DPU is for CNNs, so an LLM needs a custom design |
 
 ## Hardware used
 
